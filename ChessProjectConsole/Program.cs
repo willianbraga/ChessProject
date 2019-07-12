@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessProjectConsole.Entities.board;
+using System;
 
 namespace ChessProjectConsole
 {
@@ -6,7 +7,9 @@ namespace ChessProjectConsole
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Board board = new Board(8, 8);
+            Screen.PrintBoard(board);
+            Console.WriteLine();
         }
     }
 }
