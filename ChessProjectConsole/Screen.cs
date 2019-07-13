@@ -17,7 +17,7 @@ namespace ChessProjectConsole
                     }
                     else
                     {
-                        Console.Write(board.piece(i, j) + " ");
+                        Console.Write(board.piece(i, j) + "    ");
                     }
                 }
                 Console.WriteLine();
