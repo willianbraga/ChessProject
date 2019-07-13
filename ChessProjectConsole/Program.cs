@@ -11,16 +11,21 @@ namespace ChessProjectConsole
         {
             try
             {
+                ChessMatch chessMatch = new ChessMatch();
 
-                Board board = new Board(8, 8);
+                while (!chessMatch.finished)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(chessMatch.board);
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = Screen.GetChessPosition().toPosition();
+                    Console.Write("Destiny: ");
+                    Position destiny = Screen.GetChessPosition().toPosition();
 
-                board.PutPiece(new Tower(board, Color.Black), new Position(0, 0));
-                board.PutPiece(new Tower(board, Color.Black), new Position(1, 3));
-                board.PutPiece(new King(board, Color.Black), new Position(0, 2));
+                    chessMatch.move(origin, destiny);
+                }
 
-
-                Screen.PrintBoard(board);
-                Console.WriteLine();
             }
             catch (BoardException e)
             {

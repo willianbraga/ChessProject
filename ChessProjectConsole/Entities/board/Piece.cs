@@ -17,5 +17,9 @@ namespace ChessProjectConsole.Entities.board
             this.qtMoves = 0;
 
         }
+        public void addQtMoves()
+        {
+            qtMoves++;
+        }
     }
 }

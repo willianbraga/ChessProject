@@ -1,5 +1,5 @@
 ﻿using ChessProjectConsole.Entities.board;
-using System;
+
 
 namespace ChessProjectConsole.Entities.Chess
 {
