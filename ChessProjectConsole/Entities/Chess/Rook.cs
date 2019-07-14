@@ -3,9 +3,9 @@
 
 namespace ChessProjectConsole.Entities.Chess
 {
-    class Tower : Piece
+    class Rook : Piece
     {
-        public Tower(Board board, Color color) : base(board, color)
+        public Rook(Board board, Color color) : base(board, color)
         {
 
         }

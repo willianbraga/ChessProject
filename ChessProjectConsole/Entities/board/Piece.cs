@@ -21,6 +21,26 @@ namespace ChessProjectConsole.Entities.board
         {
             qtMoves++;
         }
+        public bool existPossibleMoves()
+        {
+            bool[,] mat = PossibleMoves();
+            for (int i = 0; i < board.lines; i++)
+            {
+                for (int j = 0; j < board.columns; j++)
+                {
+                    if (mat[i,j])
+                    {
+                        return true;
+                    }
+                }
+
+            }
+            return false;
+        }
+        public bool possibleMoveTo(Position position)
+        {
+            return PossibleMoves()[position.line, position.column];
+        }
         public abstract bool[,] PossibleMoves();
     }
 }
