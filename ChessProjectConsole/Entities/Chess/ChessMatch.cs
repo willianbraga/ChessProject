@@ -8,14 +8,14 @@ namespace ChessProjectConsole.Entities.Chess
     {
         public Board board { get; private set; }
         private int turn;
-        private Color turnPlayer;
+        //private Color turnPlayer;
         public bool finished { get; private set; }
 
         public ChessMatch()
         {
             board = new Board(8, 8);
             turn = 1;
-            turnPlayer = Color.White;
+            //turnPlayer = Color.White;
             finished = false;
             PutPieces();
         }

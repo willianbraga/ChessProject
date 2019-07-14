@@ -10,5 +10,10 @@
             this.line = line;
             this.column = column;
         }
+        public void GetPosition(int line, int column)
+        {
+            this.line = line;
+            this.column = column;
+        }
     }
 }
