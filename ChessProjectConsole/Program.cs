@@ -18,10 +18,8 @@ namespace ChessProjectConsole
                     try
                     {
                         Console.Clear();
-                        Screen.PrintBoard(chessMatch.board);
-                        Console.WriteLine();
-                        Console.WriteLine("Turn: " + chessMatch.turn);
-                        Console.WriteLine("Waiting player: " + chessMatch.turnPlayer);
+                        Screen.PrintMatch(chessMatch);
+
                         Console.WriteLine();
                         Console.Write("Origin: ");
                         Position origin = Screen.GetChessPosition().toPosition();

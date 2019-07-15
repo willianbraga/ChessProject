@@ -1,11 +1,47 @@
 ﻿using ChessProjectConsole.Entities.board;
 using ChessProjectConsole.Entities.Chess;
 using System;
+using System.Collections.Generic;
 
 namespace ChessProjectConsole
 {
     class Screen
     {
+        public static void PrintMatch(ChessMatch chessMatch)
+        {
+            PrintBoard(chessMatch.board);
+            printCapturedPieces(chessMatch);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + chessMatch.turn);
+            Console.WriteLine("Waiting player: " + chessMatch.turnPlayer);
+        }
+        public static void printCapturedPieces( ChessMatch chessMatch)
+        {
+            Console.WriteLine("Captured Pieces: ");
+            Console.Write("White: ");
+            printHash(chessMatch.capturedPieces(Color.White));
+            Console.WriteLine();
+            Console.Write("Black: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            printHash(chessMatch.capturedPieces(Color.Black));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+        public static void printHash(HashSet<Piece> pieces)
+        {
+            Console.Write("[");
+            foreach (Piece x in pieces)
+            {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
+        }
+        private static void PrintBoard(object board)
+        {
+            throw new NotImplementedException();
+        }
+
         public static void PrintBoard(Board board)
         {
             for (int i = 0; i < board.lines; i++)
@@ -52,7 +88,7 @@ namespace ChessProjectConsole
 
         public static ChessPosition GetChessPosition()
         {
-            string s = Console.ReadLine();
+            string s = Console.ReadLine().ToLower();
             char column = s[0];
             int line = int.Parse(s[1] + "");
             return new ChessPosition(column, line);
