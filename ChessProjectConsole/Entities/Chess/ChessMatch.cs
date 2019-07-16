@@ -139,6 +139,22 @@ namespace ChessProjectConsole.Entities.Chess
                 backMove(origin, destiny, RemovedPiece);
                 throw new BoardException("You cannot do this move, you are in CHECK!");
             }
+
+            Piece piece = board.piece(destiny);
+
+            //#Special Move Promotion
+            if (piece is Pawn)
+            {
+                if (piece.color == Color.White && destiny.line == 0 || piece.color==Color.Black && destiny.line==7)
+                {
+                    piece = board.RemovePiece(destiny);
+                    pieces.Remove(piece);
+                    Piece queen = new Queen(board, piece.color);
+                    board.PutPiece(queen, destiny);
+                    pieces.Add(queen);
+                }
+            }
+
             if (checkTest(Enemy(turnPlayer)))
             {
                 check = true;
@@ -154,7 +170,6 @@ namespace ChessProjectConsole.Entities.Chess
                 ChangePlayer();
             }
 
-            Piece piece = board.piece(destiny);
             //#Special Move En Passant
             if (piece is Pawn && (destiny.line == origin.line - 2 || destiny.line == origin.line + 2))
             {
