@@ -5,9 +5,10 @@ namespace ChessProjectConsole.Entities.Chess
 {
     class Pawn : Piece
     {
-        public Pawn(Board board, Color color) : base(board, color)
+        private ChessMatch chessMatch;
+        public Pawn(Board board, Color color, ChessMatch chessMatch) : base(board, color)
         {
-
+            this.chessMatch = chessMatch;
         }
         public override string ToString()
         {
@@ -55,6 +56,21 @@ namespace ChessProjectConsole.Entities.Chess
                 {
                     mat[pos.line, pos.column] = true;
                 }
+
+                //#Special Move En Passant
+                if (position.line==3 )
+                {
+                    Position leftPawn = new Position(position.line, position.column - 1);
+                    if (board.ValidPosition(leftPawn) && enemyCheck(leftPawn) && board.piece(leftPawn)== chessMatch.enPassantOption)
+                    {
+                        mat[leftPawn.line, leftPawn.column] = true;
+                    }
+                    Position rightPawn = new Position(position.line, position.column + 1);
+                    if (board.ValidPosition(rightPawn) && enemyCheck(rightPawn) && board.piece(rightPawn) == chessMatch.enPassantOption)
+                    {
+                        mat[rightPawn.line, leftPawn.column] = true;
+                    }
+                }
             }
             else
             {
@@ -79,6 +95,21 @@ namespace ChessProjectConsole.Entities.Chess
                 if (board.ValidPosition(pos) && enemyCheck(pos))
                 {
                     mat[pos.line, pos.column] = true;
+                }
+
+                //#Special Move En Passant
+                if (position.line == 4)
+                {
+                    Position leftPawn = new Position(position.line, position.column - 1);
+                    if (board.ValidPosition(leftPawn) && enemyCheck(leftPawn) && board.piece(leftPawn) == chessMatch.enPassantOption)
+                    {
+                        mat[leftPawn.line, leftPawn.column] = true;
+                    }
+                    Position rightPawn = new Position(position.line, position.column + 1);
+                    if (board.ValidPosition(rightPawn) && enemyCheck(rightPawn) && board.piece(rightPawn) == chessMatch.enPassantOption)
+                    {
+                        mat[rightPawn.line, leftPawn.column] = true;
+                    }
                 }
             }
             return mat;

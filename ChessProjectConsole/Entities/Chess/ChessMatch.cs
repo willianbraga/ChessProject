@@ -14,6 +14,7 @@ namespace ChessProjectConsole.Entities.Chess
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
         public bool check { get; private set; }
+        public Piece enPassantOption { get; private set; }
 
         public ChessMatch()
         {
@@ -22,6 +23,7 @@ namespace ChessProjectConsole.Entities.Chess
             turnPlayer = Color.White;
             finished = false;
             check = false;
+            enPassantOption = null;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             PutPieces();
@@ -56,6 +58,26 @@ namespace ChessProjectConsole.Entities.Chess
                 R.addQtMoves();
                 board.PutPiece(R, rookDestiny);
             }
+
+            //#Special Move En Passant
+            if (piece is Pawn)
+            {
+                if (origin.column != destiny.column && RemovedPiece == null)
+                {
+                    Position PosP;
+                    if (piece.color == Color.White)
+                    {
+                        PosP = new Position(destiny.line + 1, destiny.column);
+                    }
+                    else
+                    {
+                        PosP = new Position(destiny.line - 1, destiny.column);
+                    }
+                    RemovedPiece = board.RemovePiece(PosP);
+                    captured.Add(RemovedPiece);
+                }
+            }
+
             return RemovedPiece;
         }
         public void backMove(Position origin, Position destiny, Piece RemovedPiece)
@@ -88,6 +110,25 @@ namespace ChessProjectConsole.Entities.Chess
                 board.PutPiece(R, rookOrigin);
             }
 
+            //Special Move En Passant
+            if (p is Pawn)
+            {
+                if (origin.column != destiny.column && RemovedPiece == enPassantOption)
+                {
+                    Piece pawn = board.RemovePiece(destiny);
+                    Position PosP;
+                    if (p.color == Color.White)
+                    {
+                        PosP = new Position(3, destiny.column);
+                    }
+                    else
+                    {
+                        PosP = new Position(4, destiny.column);
+                    }
+                    board.PutPiece(pawn, PosP);
+                }
+            }
+
         }
         public void MovingPieces(Position origin, Position destiny)
         {
@@ -111,6 +152,17 @@ namespace ChessProjectConsole.Entities.Chess
             {
                 turn++;
                 ChangePlayer();
+            }
+
+            Piece piece = board.piece(destiny);
+            //#Special Move En Passant
+            if (piece is Pawn && (destiny.line == origin.line - 2 || destiny.line == origin.line + 2))
+            {
+                enPassantOption = piece;
+            }
+            else
+            {
+                enPassantOption = null;
             }
         }
         public void ValidateOriginPosition(Position position)
@@ -256,14 +308,14 @@ namespace ChessProjectConsole.Entities.Chess
             PutNewPieces('g', 1, new Knight(board, Color.White));
             PutNewPieces('h', 1, new Rook(board, Color.White));
 
-            PutNewPieces('a', 2, new Pawn(board, Color.White));
-            PutNewPieces('b', 2, new Pawn(board, Color.White));
-            PutNewPieces('c', 2, new Pawn(board, Color.White));
-            PutNewPieces('d', 2, new Pawn(board, Color.White));
-            PutNewPieces('e', 2, new Pawn(board, Color.White));
-            PutNewPieces('f', 2, new Pawn(board, Color.White));
-            PutNewPieces('g', 2, new Pawn(board, Color.White));
-            PutNewPieces('h', 2, new Pawn(board, Color.White));
+            PutNewPieces('a', 2, new Pawn(board, Color.White, this));
+            PutNewPieces('b', 2, new Pawn(board, Color.White, this));
+            PutNewPieces('c', 2, new Pawn(board, Color.White, this));
+            PutNewPieces('d', 2, new Pawn(board, Color.White, this));
+            PutNewPieces('e', 2, new Pawn(board, Color.White, this));
+            PutNewPieces('f', 2, new Pawn(board, Color.White, this));
+            PutNewPieces('g', 2, new Pawn(board, Color.White, this));
+            PutNewPieces('h', 2, new Pawn(board, Color.White, this));
 
 
             PutNewPieces('a', 8, new Rook(board, Color.Black));
@@ -275,14 +327,14 @@ namespace ChessProjectConsole.Entities.Chess
             //  PutNewPieces('g', 8, new Knight(board, Color.Black));
             PutNewPieces('h', 8, new Rook(board, Color.Black));
 
-            PutNewPieces('a', 7, new Pawn(board, Color.Black));
-            PutNewPieces('b', 7, new Pawn(board, Color.Black));
-            PutNewPieces('c', 7, new Pawn(board, Color.Black));
-            PutNewPieces('d', 7, new Pawn(board, Color.Black));
-            PutNewPieces('e', 7, new Pawn(board, Color.Black));
-            PutNewPieces('f', 7, new Pawn(board, Color.Black));
-            PutNewPieces('g', 7, new Pawn(board, Color.Black));
-            PutNewPieces('h', 7, new Pawn(board, Color.Black));
+            PutNewPieces('a', 7, new Pawn(board, Color.Black, this));
+            PutNewPieces('b', 7, new Pawn(board, Color.Black, this));
+            PutNewPieces('c', 7, new Pawn(board, Color.Black, this));
+            PutNewPieces('d', 7, new Pawn(board, Color.Black, this));
+            PutNewPieces('e', 7, new Pawn(board, Color.Black, this));
+            PutNewPieces('f', 7, new Pawn(board, Color.Black, this));
+            PutNewPieces('g', 7, new Pawn(board, Color.Black, this));
+            PutNewPieces('h', 7, new Pawn(board, Color.Black, this));
 
 
 
