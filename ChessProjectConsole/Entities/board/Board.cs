@@ -26,7 +26,7 @@ namespace ChessProjectConsole.Entities.board
         }
         public bool ExistPiece(Position position)
         {
-            ValidPosition(position);
+            ValidatedPosition(position);
             return piece(position) != null;
         }
         public void PutPiece (Piece piece, Position position)

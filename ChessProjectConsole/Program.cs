@@ -41,14 +41,19 @@ namespace ChessProjectConsole
                     {
                         Console.WriteLine(e.Message);
                         Console.ReadLine();
+
                     }
                 }
+                Console.Clear();
+                Screen.PrintMatch(chessMatch);
 
             }
             catch (BoardException e)
             {
                 Console.WriteLine(e.Message);
             }
+            Console.ReadLine();
+
         }
     }
 }

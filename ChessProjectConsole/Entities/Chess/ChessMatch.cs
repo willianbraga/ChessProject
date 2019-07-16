@@ -55,19 +55,25 @@ namespace ChessProjectConsole.Entities.Chess
         {
             Piece RemovedPiece = Move(origin, destiny);
 
-            if (checkAvailable(turnPlayer))
+            if (checkTest(turnPlayer))
             {
                 backMove(origin, destiny, RemovedPiece);
-                throw new BoardException("You cannot put yourself in check!");
+                throw new BoardException("You cannot do this move, you are in CHECK!");
             }
-            if (checkAvailable(Enemy(turnPlayer)))
+            if (checkTest(Enemy(turnPlayer)))
             {
                 check = true;
             }
             else { check = false; }
-
-            turn++;
-            ChangePlayer();
+            if (checkMateTest(Enemy(turnPlayer)))
+            {
+                finished = true;
+            }
+            else
+            {
+                turn++;
+                ChangePlayer();
+            }
         }
         public void ValidateOriginPosition(Position position)
         {
@@ -149,7 +155,7 @@ namespace ChessProjectConsole.Entities.Chess
             }
             return null;
         }
-        public bool checkAvailable(Color color)
+        public bool checkTest(Color color)
         {
             Piece K = King(color);
             if (K == null)
@@ -166,6 +172,36 @@ namespace ChessProjectConsole.Entities.Chess
             }
             return false;
         }
+        public bool checkMateTest(Color color)
+        {
+            if (!checkTest(color))
+            {
+                return false;
+            }
+            foreach (Piece x in piecesInGame(color))
+            {
+                bool[,] mat = x.PossibleMoves();
+                for (int i = 0; i < board.lines; i++)
+                {
+                    for (int j = 0; j < board.columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.position;
+                            Position destiny = new Position(i, j);
+                            Piece removedPiece = Move(origin, destiny);
+                            bool checktest = checkTest(color);
+                            backMove(origin, destiny, removedPiece);
+                            if (!checktest)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
         public void PutNewPieces(char column, int line, Piece piece)
         {
             board.PutPiece(piece, new ChessPosition(column, line).toPosition());
@@ -173,19 +209,16 @@ namespace ChessProjectConsole.Entities.Chess
         }
         public void PutPieces()
         {
-            PutNewPieces('a', 1, new Rook(board, Color.White));
+            PutNewPieces('g', 1, new Rook(board, Color.White));
             PutNewPieces('b', 2, new Pawn(board, Color.White));
             PutNewPieces('c', 2, new Bishop(board, Color.White));
             PutNewPieces('d', 2, new Rook(board, Color.White));
             PutNewPieces('e', 1, new King(board, Color.White));
             PutNewPieces('f', 4, new Queen(board, Color.White));
 
-            PutNewPieces('c', 7, new Bishop(board, Color.Black));
-            PutNewPieces('c', 8, new Pawn(board, Color.Black));
-            PutNewPieces('d', 7, new Knight(board, Color.Black));
-            PutNewPieces('e', 7, new Rook(board, Color.Black));
-            PutNewPieces('e', 8, new Queen(board, Color.Black));
-            PutNewPieces('d', 8, new King(board, Color.Black));
+
+            PutNewPieces('g', 8, new Pawn(board, Color.Black));
+            PutNewPieces('h', 8, new King(board, Color.Black));
 
         }
     }

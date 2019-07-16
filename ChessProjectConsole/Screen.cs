@@ -13,26 +13,37 @@ namespace ChessProjectConsole
             printCapturedPieces(chessMatch);
             Console.WriteLine();
             Console.WriteLine("Turn: " + chessMatch.turn);
-            Console.Write("Waiting player: ");
-            ConsoleColor aux = Console.ForegroundColor;
-
-            if (chessMatch.turnPlayer == Color.Black)
+            if (!chessMatch.finished)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(chessMatch.turnPlayer);
+
+
+                Console.Write("Waiting player: ");
+                ConsoleColor aux = Console.ForegroundColor;
+
+                if (chessMatch.turnPlayer == Color.Black)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(chessMatch.turnPlayer);
+                }
+                else
+                {
+                    Console.ForegroundColor = aux;
+                    Console.WriteLine(chessMatch.turnPlayer);
+                }
+                Console.ForegroundColor = aux;
+                if (chessMatch.check)
+                {
+                    Console.WriteLine(" - CHECK");
+                }
             }
             else
             {
-                Console.ForegroundColor = aux;
-                Console.WriteLine(chessMatch.turnPlayer);
-            }
-            Console.ForegroundColor = aux;
-            if (chessMatch.check)
-            {
-                Console.WriteLine(" - CHECK");
+                Console.WriteLine("CHECKMATE!");
+                Console.WriteLine("Winner: " + chessMatch.turnPlayer);
+                Console.ReadLine();
             }
         }
-        public static void printCapturedPieces( ChessMatch chessMatch)
+        public static void printCapturedPieces(ChessMatch chessMatch)
         {
             Console.WriteLine("Captured Pieces: ");
             Console.Write("White: ");
