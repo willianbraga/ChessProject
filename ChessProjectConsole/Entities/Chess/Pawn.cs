@@ -13,10 +13,14 @@ namespace ChessProjectConsole.Entities.Chess
         {
             return "  P";
         }
-        private bool MoveCheck(Position position)
+        private bool enemyCheck(Position position)
         {
             Piece piece = board.piece(position);
-            return piece == null || piece.color != color;
+            return piece != null && piece.color != color;
+        }
+        private bool freeMove(Position position)
+        {
+            return board.piece(position) == null;
         }
         public override bool[,] PossibleMoves()
         {
@@ -24,11 +28,58 @@ namespace ChessProjectConsole.Entities.Chess
 
             Position pos = new Position(0, 0);
 
-            //UP
-            pos.GetPosition(position.line - 1, position.column);
-            if (board.ValidPosition(pos) && MoveCheck(pos))
+            if (color == Color.White)
             {
-                mat[pos.line, pos.column] = true;
+                pos.GetPosition(position.line - 1, position.column);
+
+                if (board.ValidPosition(pos) && freeMove(pos))
+                {
+                    mat[pos.line, pos.column] = true;
+                }
+
+                pos.GetPosition(position.line - 2, position.column);
+
+                Position pos2 = new Position(position.line, position.column);
+
+                if (board.ValidPosition(pos2) && freeMove(pos2) && board.ValidPosition(pos) && freeMove(pos) && qtMoves == 0)
+                {
+                    mat[pos.line, pos.column] = true;
+                }
+                pos.GetPosition(position.line - 1, position.column - 1);
+                if (board.ValidPosition(pos) && enemyCheck(pos))
+                {
+                    mat[pos.line, pos.column] = true;
+                }
+                pos.GetPosition(position.line - 1, position.column + 1);
+                if (board.ValidPosition(pos) && enemyCheck(pos))
+                {
+                    mat[pos.line, pos.column] = true;
+                }
+            }
+            else
+            {
+                pos.GetPosition(position.line + 1, position.column);
+                if (board.ValidPosition(pos) && freeMove(pos))
+                {
+                    mat[pos.line, pos.column] = true;
+                }
+
+                pos.GetPosition(position.line + 2, position.column);
+                Position pos2 = new Position(position.line, position.column);
+                if (board.ValidPosition(pos2) && freeMove(pos2) && board.ValidPosition(pos) && freeMove(pos) && qtMoves == 0)
+                {
+                    mat[pos.line, pos.column] = true;
+                }
+                pos.GetPosition(position.line + 1, position.column - 1);
+                if (board.ValidPosition(pos) && enemyCheck(pos))
+                {
+                    mat[pos.line, pos.column] = true;
+                }
+                pos.GetPosition(position.line + 1, position.column + 1);
+                if (board.ValidPosition(pos) && enemyCheck(pos))
+                {
+                    mat[pos.line, pos.column] = true;
+                }
             }
             return mat;
         }
