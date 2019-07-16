@@ -13,7 +13,24 @@ namespace ChessProjectConsole
             printCapturedPieces(chessMatch);
             Console.WriteLine();
             Console.WriteLine("Turn: " + chessMatch.turn);
-            Console.WriteLine("Waiting player: " + chessMatch.turnPlayer);
+            Console.Write("Waiting player: ");
+            ConsoleColor aux = Console.ForegroundColor;
+
+            if (chessMatch.turnPlayer == Color.Black)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(chessMatch.turnPlayer);
+            }
+            else
+            {
+                Console.ForegroundColor = aux;
+                Console.WriteLine(chessMatch.turnPlayer);
+            }
+            Console.ForegroundColor = aux;
+            if (chessMatch.check)
+            {
+                Console.WriteLine(" - CHECK");
+            }
         }
         public static void printCapturedPieces( ChessMatch chessMatch)
         {
@@ -37,11 +54,6 @@ namespace ChessProjectConsole
             }
             Console.Write("]");
         }
-        private static void PrintBoard(object board)
-        {
-            throw new NotImplementedException();
-        }
-
         public static void PrintBoard(Board board)
         {
             for (int i = 0; i < board.lines; i++)
